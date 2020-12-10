@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 
 app = App(FastAPI())
-app.mount("front-end/public", StaticFiles(directory="static"), name="static")
+app.mount("/front-end/build/static", StaticFiles(directory="static"), name="static")
 
 with open("model.mo", "rb") as f:
     model = pickle.load(f)
@@ -29,7 +29,7 @@ class Answer(BaseModel):
 
 @app.get("/")
 def index():
-    return responses.HTMLResponse(open("front-end/public/index.html").read())
+    return responses.HTMLResponse(open("front-end/build/static/index.html").read())
 
 @app.post("/grade_predict")
 async def predict_student_grade(answer: Answer):
