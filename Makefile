@@ -1,11 +1,11 @@
-say-hello:
-	@echo "Hello World"
-
+install-react-app:
+	@cd front-end && npm install
 build-react-app:
 	@cd front-end && npm run build
 
-pack-static-files:
-	@cd front-end/build && mv *.* static
-
 move-static-files:
-	
+	@rm -rf ml_api/build
+	@cp -r front-end/build ml_api/build
+
+start-endpoint:
+	@cd ml_api && uvicorn main:app --reload

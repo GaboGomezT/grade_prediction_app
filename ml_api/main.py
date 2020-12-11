@@ -1,14 +1,13 @@
 import pickle
 
 import pandas as pd
-from deta import App
 from fastapi import FastAPI, responses
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 
-app = App(FastAPI())
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app = FastAPI()
+app.mount("/build", StaticFiles(directory="build"), name="build")
 
 with open("model.mo", "rb") as f:
     model = pickle.load(f)
@@ -29,7 +28,7 @@ class Answer(BaseModel):
 
 @app.get("/")
 def index():
-    return responses.HTMLResponse(open("./index_old.html").read())
+    return responses.HTMLResponse(open("build/index.html").read())
 
 @app.post("/grade_predict")
 async def predict_student_grade(answer: Answer):
